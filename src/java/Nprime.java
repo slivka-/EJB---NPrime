@@ -7,16 +7,17 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 /**
- *
  * @author Michał Śliwa
  */
 @WebServlet(urlPatterns = {"/Nprime"})
 public class Nprime extends HttpServlet
 {
+    private static final long serialVersionUID = 5674342757568856568L;
+    
     @EJB(mappedName = "NprimeRemote")
     public NprimeRemote nPrimeBean;
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -32,27 +33,30 @@ public class Nprime extends HttpServlet
         response.setContentType("text/html;charset=UTF-8");
         Enumeration<String> paramNames = request.getParameterNames();
         int n = -1;
+        //check url parameters for n value
         while (paramNames.hasMoreElements())
         {
             String param = request.getParameter(paramNames.nextElement());
             if (canParseInt(param))
             {
+                //if parameter is parsable to int, save it and break
                 n = Integer.parseInt(param);
                 break;
             }
         }
         try (PrintWriter out = response.getWriter())
         {
-            
-            if (n != -1)
+            //if n is non negative number
+            if (n > 0)
             {
-
-                if(request.getMethod().equals("POST"))
+                if (request.getMethod().equals("POST"))
                 {
+                    //return smallest prime number greater than n
                     out.println(nPrimeBean.prime(n));
                 }
-                else if(request.getMethod().equals("GET"))
+                else if (request.getMethod().equals("GET"))
                 {
+                    //return biggest prime number lesser than n
                     int tempN = n;
                     int output = n;
                     while (output >= n)
@@ -67,15 +71,22 @@ public class Nprime extends HttpServlet
         }
     }
     
+    /**
+     * Checks if String can be parsed to int
+     * @param in String to be parsed
+     * @return true if it can be parsed, otherwise false
+     */
     private boolean canParseInt(String in)
     {
         try
         {
+            //parse int, resturn true
             Integer.parseInt(in);
             return true;
         }
-        catch( NumberFormatException ex)
+        catch (NumberFormatException ex)
         {
+            //on exception return false
             return false;
         }
     }
