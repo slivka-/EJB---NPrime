@@ -32,7 +32,7 @@ public class Nprime extends HttpServlet
         try (PrintWriter out = response.getWriter())
         {
             out.write("Hello World!");
-            out.write("Liczba: "+nPrimeBean.prime(1));
+            out.write("Liczba: "+nPrimeBean.prime(100));
         }
     }
 
