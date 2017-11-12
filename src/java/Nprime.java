@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Enumeration;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -29,10 +30,53 @@ public class Nprime extends HttpServlet
             throws ServletException, IOException
     {
         response.setContentType("text/html;charset=UTF-8");
+        Enumeration<String> paramNames = request.getParameterNames();
+        int n = -1;
+        while (paramNames.hasMoreElements())
+        {
+            String param = request.getParameter(paramNames.nextElement());
+            if (canParseInt(param))
+            {
+                n = Integer.parseInt(param);
+                break;
+            }
+        }
         try (PrintWriter out = response.getWriter())
         {
-            out.write("Hello World!");
-            out.write("Liczba: "+nPrimeBean.prime(100));
+            
+            if (n != -1)
+            {
+
+                if(request.getMethod().equals("POST"))
+                {
+                    out.println(nPrimeBean.prime(n));
+                }
+                else if(request.getMethod().equals("GET"))
+                {
+                    int tempN = n;
+                    int output = n;
+                    while (output >= n)
+                       output = nPrimeBean.prime(tempN-=4);
+                    out.println(output);
+                }
+            }
+            else
+            {
+                out.println("No n given");
+            }
+        }
+    }
+    
+    private boolean canParseInt(String in)
+    {
+        try
+        {
+            Integer.parseInt(in);
+            return true;
+        }
+        catch( NumberFormatException ex)
+        {
+            return false;
         }
     }
 
