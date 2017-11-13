@@ -36,14 +36,22 @@ public class NprimeBean implements NprimeRemote
      */
     private Boolean isPrime(int p)
     {
-        //check only half of the number
-        int lim = (p+1)/2;
-        for (int i = 3; i < lim; i++)
+        //if p is divisable by 2, return false
+        if(p%2!=0)
         {
-            //if number can be divided without rest, return false
-            if (p % i == 0)
-                return false;
+            //check only half of the number
+            int lim = (p+1)/2;
+            for (int i = 3; i < lim; i++)
+            {
+                //if number can be divided without rest, return false
+                if (p % i == 0)
+                    return false;
+            }
+            return true;
         }
-        return true;
+        else
+        {
+            return false;
+        }
     }
 }
