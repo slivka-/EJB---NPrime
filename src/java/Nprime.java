@@ -51,17 +51,27 @@ public class Nprime extends HttpServlet
             {
                 if (request.getMethod().equals("POST"))
                 {
-                    //return smallest prime number greater than n
-                    out.println(nPrimeBean.prime(n));
+                    if(n>7)
+                    {
+                        //return smallest prime number greater than n
+                        out.println(nPrimeBean.prime(n));
+                    }
+                    else
+                    {
+                       out.println(7);
+                    }
                 }
                 else if (request.getMethod().equals("GET"))
                 {
-                    //return biggest prime number lesser than n
-                    int tempN = n;
-                    int output = n;
-                    while (output >= n)
-                       output = nPrimeBean.prime(tempN-=4);
-                    out.println(output);
+                    if(n>7)
+                    {
+                        //return biggest prime number lesser than n
+                        int tempN = n;
+                        int output = n;
+                        while (output >= n)
+                           output = nPrimeBean.prime(tempN-=4);
+                        out.println(output);
+                    }
                 }
             }
             else
